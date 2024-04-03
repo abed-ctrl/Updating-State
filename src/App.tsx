@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import produce from "immer";
 
 const App = () => {
   const [cart, setCart] = useState({
@@ -10,12 +11,12 @@ const App = () => {
   });
 
   const handleClick = () => {
-    setCart({
-      ...cart,
-      items: cart.items.map((item) =>
-        item.id === 1 ? { ...item, quantity: 10 } : item
-      ),
-    });
+    setCart(
+      produce((draft) => {
+        const item = draft.items.find((item) => item.id === 1);
+        if (item) item.quantity = 10;
+      })
+    );
   };
   return (
     <div>
